@@ -2,7 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js"
 import { ApiError } from "../utils/ApiError.js"
 import { User } from "../models/user.model.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
-import jwt, { verify } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
@@ -26,12 +26,12 @@ const generateAccessAndRefreshTokens = async (userId) => {
 const registerUser = asyncHandler(async (req, res) => {
 
     //get user detail from frontend
-    const { name, email, password } = req.body
+    const { name, email, password, contactNo, address } = req.body
     //console.log(req.body);
 
     //validation -not empty
     if (
-        [name, email, password].some((field) => field?.trim() === "")
+        [name, email, password, contactNo, address].some((field) => field?.trim() === "")
     ) {
         throw new ApiError(400, "All fields are required")
     }
@@ -49,7 +49,9 @@ const registerUser = asyncHandler(async (req, res) => {
     const user = await User.create({
         name,
         email,
-        password
+        password,
+        contactNo,
+        address
     })
 
     //check user creation
