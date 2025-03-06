@@ -58,9 +58,18 @@ const registrationValidation = (req, res, next) => {
 //login validation
 const loginValidation = (req, res, next) => {
     const schema = joi.object({
+        name: joi.string()
+            .min(3)
+            .max(30)
+            .optional()
+            .messages({
+                "string.empty": "Name cannot be empty",
+                "string.min": "Name must be at least 3 characters",
+                "string.max": "Name cannot be longer than 30 characters"
+            }),
         email: joi.string()
             .email()
-            .required()
+            .optional()
             .messages({
                 "string.email": "Invalid email format",
                 "string.empty": "Email can not be empty"
@@ -76,7 +85,7 @@ const loginValidation = (req, res, next) => {
                 "string.max": "Password cannot longer than 10 characters",
                 "string.pattern.base": "Password must include at least one uppercase letter, one number,and one special character"
             }),
-    })
+    }).or('email','name')
 
     const { error } = schema.validate(req.body, { abortEarly: false })
     if (error) {
@@ -88,4 +97,4 @@ const loginValidation = (req, res, next) => {
 
 
 
-export { registrationValidation, loginValidation }
+export { registrationValidation ,loginValidation}

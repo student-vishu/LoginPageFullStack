@@ -56,7 +56,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
     //check user creation
     const createdUser = await User.findById(user._id).select("-password -refreshToken")
-    console.log(createdUser);
+    //console.log(createdUser);
 
 
     if (!createdUser) {
@@ -70,7 +70,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
     //req body-data
-    const { name, email, password } = req.body
+    const { email, name, password } = req.body
 
     //name or email check 
     if (!name && !email) {
@@ -97,6 +97,8 @@ const loginUser = asyncHandler(async (req, res) => {
 
     //user ne badhi vastu mokalvani sivay pass and refreshtoken
     const loggedinUser = await User.findById(user._id).select("-password -refreshToken")
+    console.log("user found:", loggedinUser);
+
 
     //when we send cookies , we design option.
     //cookies bydefault anyone can modified on frontend , so when below 2 options "true" karie tyre khali server side j cookie modified thai sake.
